@@ -1,0 +1,11 @@
+{
+  "name": "kanap",
+  "version": "1.0.0",
+  "description": "mon premier projet e-commerce kanap",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chloe Reyne",
+  "license": "MIT"
+}
