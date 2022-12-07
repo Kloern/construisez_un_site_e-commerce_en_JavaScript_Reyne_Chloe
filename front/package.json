@@ -4,7 +4,7 @@
   "description": "mon premier projet e-commerce kanap",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./back/server.js"
   },
   "author": "Chloe Reyne",
   "license": "MIT"

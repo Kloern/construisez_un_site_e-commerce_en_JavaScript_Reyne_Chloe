@@ -1,0 +1,1 @@
+// déclaration des variables du fichier JSON à insérer dans ma fonction fetch
