@@ -2,6 +2,9 @@
 const url = new URL(window.location.href);
 const idProduct = url.searchParams.get("id");
 
+const qteSelect = document.querySelector("#quantity");
+const colorSelect = document.querySelector("#colors");
+
 //récupération des articles de l'API
 fetch("http://localhost:3000/api/products/" + idProduct)
 .then(function (res) {
@@ -48,10 +51,6 @@ function getPost(article) {
     addCart(article);
 }
 
-const qteSelect = document.querySelector("#quantity");
-const colorSelect = document.querySelector("#colors");
-
-addCart(article);
 
 function addCart(article) {
     const btnAddPanier = document.querySelector("#addToCart");
@@ -60,50 +59,55 @@ function addCart(article) {
     btnAddPanier.addEventListener("click", (event)=>{
         if (qteSelect.value > 0 && qteSelect.value <=100 && qteSelect.value != 0){
 
-    //choix de la couleur
-    let choixCouleur = colorSelect.value;                
-    //choix de la quantité
-    let choixQte = qteSelect.value;
-    //Récupération des options
-    let optionsProduit = {
-        id_produit: idProduct,
-        couleur_produit: choixCouleur,
-        qte_produit: Number(choixQte),
-        nom_produit: article.name,
-        prix_produit: article.price,
-        description_produit: article.description,
-        img_produit: article.imageUrl,
-        altImg_produit: article.altTxt
-    };
+        //choix de la couleur
+        let choixCouleur = colorSelect.value;                
+        //choix de la quantité
+        let choixQte = qteSelect.value;
+        //Récupération des options
+        let optionsProduit = {
+            id_produit: idProduct,
+            couleur_produit: choixCouleur,
+            qte_produit: Number(choixQte),
+            nom_produit: article.name,
+            prix_produit: article.price,
+            description_produit: article.description,
+            img_produit: article.imageUrl,
+            altImg_produit: article.altTxt
+        };
 
-    //Initialisation du local storage
-    let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
-    
+        //initialisation du local storage
+        let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
+        
+        function popupConfirmation() {
+            if(window.confirm(`Votre commande de ${choixQte} ${article.name} ${choixCouleur} est ajoutée au panier. Pour consulter votre panier, cliquez sur OK`)){
+                window.location.href ="cart.html";
+            }
+        }
 
-    //Importation dans le local storage
-    //Si le panier comporte déjà au moins 1 article
-    if (produitLocalStorage) {
-    const resultFind = produitLocalStorage.find((el) => el.id_produit === idProduct && el.couleur_produit === choixCouleur);
-        //Si le produit commandé est déjà dans le panier
-        if (resultFind) {
-            let newQte =
-            parseInt(optionsProduit.qte_produit) + parseInt(resultFind.qte_produit);
-            resultFind.qte_produit = newQte;
-            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-            popupConfirmation();
-        //Si le produit commandé n'est pas dans le panier
+        //importation dans le local storage
+        //si le panier comporte déjà au moins 1 article
+        if (produitLocalStorage) {
+            const resultFind = produitLocalStorage.find((el) => el.id_produit === idProduct && el.couleur_produit === choixCouleur);
+            //si le produit commandé est déjà dans le panier
+            if (resultFind) {
+                let newQte =
+                parseInt(optionsProduit.qte_produit) + parseInt(resultFind.qte_produit);
+                resultFind.qte_produit = newQte;
+                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                popupConfirmation();
+            //si le produit commandé n'est pas dans le panier
+            } else {
+                produitLocalStorage.push(optionsProduit);
+                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                popupConfirmation();
+            }
+        //si le panier est vide
         } else {
+            produitLocalStorage =[];
             produitLocalStorage.push(optionsProduit);
             localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
             popupConfirmation();
         }
-    //Si le panier est vide
-    } else {
-        produitLocalStorage =[];
-        produitLocalStorage.push(optionsProduit);
-        localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-        popupConfirmation();
-    }}
+        }
     });
-    
 }
