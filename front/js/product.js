@@ -57,56 +57,53 @@ function addCart(article) {
 
     //Vérification si dans le panier il y a ces 2 conditions 1 couleur et quantité entre 1 et 100
     btnAddPanier.addEventListener("click", (event)=>{
-        if (qteSelect.value > 0 && qteSelect.value <=100 && qteSelect.value != 0){
+        if ((parseInt(qteSelect.value) > 0 && parseInt(qteSelect.value) <=100) && colorSelect.value.length != 0){
 
-        //choix de la couleur
-        let choixCouleur = colorSelect.value;
-        //choix de la quantité
-        let choixQte = qteSelect.value;
-        //Récupération des options
-        let optionsProduit = {
-            id_produit: idProduct,
-            couleur_produit: choixCouleur,
-            qte_produit: Number(choixQte),
-            nom_produit: article.name,
-            description_produit: article.description,
-            img_produit: article.imageUrl,
-            altImg_produit: article.altTxt
-        };
+            //choix de la couleur
+            let choixCouleur = colorSelect.value;
+            //choix de la quantité
+            let choixQte = qteSelect.value;
+            //Récupération des options
+            let optionsProduit = {
+                id_produit: idProduct,
+                couleur_produit: choixCouleur,
+                qte_produit: Number(choixQte),
+                nom_produit: article.name,
+                description_produit: article.description,
+                img_produit: article.imageUrl,
+                altImg_produit: article.altTxt
+            };
 
-        //initialisation du local storage
-        let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
+            //initialisation du local storage
+            let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
-        function popupConfirmation() {
-            if(window.confirm(`Votre commande de ${choixQte} ${article.name} ${choixCouleur} est ajoutée au panier. Pour consulter votre panier, cliquez sur OK`)){
-                window.location.href ="cart.html";
+            function popupConfirmation() {
+                if(window.confirm(`Votre commande de ${choixQte} ${article.name} ${choixCouleur} est ajoutée au panier. Pour consulter votre panier, cliquez sur OK`)){
+                    window.location.href ="cart.html";
+                }
             }
-        }
 
-        //importation dans le local storage
-        //si le panier comporte déjà au moins 1 article
-        if (produitLocalStorage) {
-            const resultFind = produitLocalStorage.find((el) => el.id_produit === idProduct && el.couleur_produit === choixCouleur);
-            //si le produit commandé est déjà dans le panier
-            if (resultFind) {
-                let newQte =
-                parseInt(optionsProduit.qte_produit) + parseInt(resultFind.qte_produit);
-                resultFind.qte_produit = newQte;
-                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                popupConfirmation();
-            //si le produit commandé n'est pas dans le panier
-            } else {
-                produitLocalStorage.push(optionsProduit);
-                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                popupConfirmation();
-            }
-        //si le panier est vide
+            //importation dans le local storage
+            //si le panier comporte déjà au moins 1 article
+            if (produitLocalStorage) {
+                const resultFind = produitLocalStorage.find((el) => el.id_produit === idProduct && el.couleur_produit === choixCouleur);
+                //si le produit commandé est déjà dans le panier
+                if (resultFind) {
+                    let newQte =
+                    parseInt(optionsProduit.qte_produit) + parseInt(resultFind.qte_produit);
+                    resultFind.qte_produit = newQte;
+                    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                    popupConfirmation();
+                //si le produit commandé n'est pas dans le panier
+                } else {
+                    produitLocalStorage.push(optionsProduit);
+                    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                    popupConfirmation();
+                }
+            } 
+        //si les champs ne sont pas renseignés
         } else {
-            produitLocalStorage =[];
-            produitLocalStorage.push(optionsProduit);
-            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-            popupConfirmation();
-        }
-        }
+                window.alert('Veuillez remplir les champs !')
+            }
     });
 }

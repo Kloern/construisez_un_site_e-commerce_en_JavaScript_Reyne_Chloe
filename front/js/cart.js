@@ -96,7 +96,7 @@ function getCart() {
                 productQuantity.addEventListener('change', () => {
                     produitLocalStorage[i].qte_produit = parseInt(productQuantity.value)
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                    location.reload();
+                    totals();
                 })
 
                 //insertion de div suppression
@@ -117,6 +117,10 @@ function getCart() {
 
                     //On envoie la variable dans le local storage
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+
+                    console.log(produitLocalStorage);
+
+                    totals();
                 })
                 totals();
             })
@@ -139,15 +143,15 @@ function totals() {
     let totalQuantity = 0;
 
 
-    produitLocalStorage.forEach((produitLocalStorage) => {
-        totalQuantity += produitLocalStorage.qte_produit;
-        productTotalQuantity.innerHTML = totalQuantity;
+    produitLocalStorage.forEach((produit) => {
+        totalQuantity += produit.qte_produit;
     });
+    productTotalQuantity.innerHTML = totalQuantity;
 
-    produitLocalStorage.forEach((produitLocalStorage) => {
-        totalPrice += produitLocalStorage.qte_produit * productPrices[produitLocalStorage.id_produit];
-        productTotalPrice.innerHTML = totalPrice;
+    produitLocalStorage.forEach((produit) => {
+        totalPrice += produit.qte_produit * productPrices[produit.id_produit];
     });
+    productTotalPrice.innerHTML = totalPrice;
 
     console.log(totalQuantity, totalPrice)
 }
@@ -170,10 +174,10 @@ const validFirstName = function (inputFirstName) {
     if (charRegExp.test(inputFirstName.value)) {
         firstNameErrorMsg.innerHTML = "";
         return true;
-    } else {
-        firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        return false;
     }
+    firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    return false;
+    
 };
 form.firstName.addEventListener("change", function () {
     validFirstName(this);
@@ -185,10 +189,10 @@ const validLastName = function (inputLastName) {
     if (charRegExp.test(inputLastName.value)) {
         lastNameErrorMsg.innerHTML = "";
         return true;
-    } else {
-        lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        return false;
     }
+    lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    return false;
+
 };
 form.lastName.addEventListener("change", function () {
     validLastName(this);
@@ -201,10 +205,10 @@ const validAddress = function (inputAddress) {
     if (addressRegExp.test(inputAddress.value)) {
         addressErrorMsg.innerHTML = "";
         return true;
-    } else {
-        addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        return false;
     }
+    addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    return false;
+    
 };
 form.address.addEventListener("change", function () {
     validAddress(this);
@@ -217,10 +221,9 @@ const validCity = function (inputCity) {
     if (charRegExp.test(inputCity.value)) {
         cityErrorMsg.innerHTML = "";
         return true;
-    } else {
-        cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        return false;
     }
+    cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    return false;
 };
 form.city.addEventListener("change", function () {
     validCity(this);
@@ -233,10 +236,10 @@ const validEmail = function (inputEmail) {
     if (emailRegExp.test(inputEmail.value)) {
         emailErrorMsg.innerHTML = "";
         return true;
-    } else {
-        emailErrorMsg.innerHTML = "Veuillez renseigner votre email.";
-        return false;
     }
+    emailErrorMsg.innerHTML = "Veuillez renseigner votre email.";
+    return false;
+
 };
 form.email.addEventListener("change", function () {
     validEmail(this);
