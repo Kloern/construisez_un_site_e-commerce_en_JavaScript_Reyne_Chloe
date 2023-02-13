@@ -54,10 +54,9 @@ function getPost(article) {
 
 function addCart(article) {
     const btnAddPanier = document.querySelector("#addToCart");
-
     //Vérification si dans le panier il y a ces 2 conditions 1 couleur et quantité entre 1 et 100
     btnAddPanier.addEventListener("click", (event)=>{
-        if ((parseInt(qteSelect.value) > 0 && parseInt(qteSelect.value) <=100) && colorSelect.value.length != 0){
+        if ((parseInt(qteSelect.value) > 0 && parseInt(qteSelect.value) < 101) && colorSelect.value.length != 0) {
 
             //choix de la couleur
             let choixCouleur = colorSelect.value;
@@ -82,7 +81,6 @@ function addCart(article) {
                     window.location.href ="cart.html";
                 }
             }
-
             //importation dans le local storage
             //si le panier comporte déjà au moins 1 article
             if (produitLocalStorage) {
@@ -94,16 +92,24 @@ function addCart(article) {
                     resultFind.qte_produit = newQte;
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
                     popupConfirmation();
+                }
                 //si le produit commandé n'est pas dans le panier
-                } else {
+                else {
                     produitLocalStorage.push(optionsProduit);
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
                     popupConfirmation();
                 }
-            } 
-        //si les champs ne sont pas renseignés
-        } else {
-                window.alert('Veuillez remplir les champs !')
-            }
+                //si le panier est vide
+                }
+                else {
+                    produitLocalStorage =[];
+                    produitLocalStorage.push(optionsProduit);
+                    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                    popupConfirmation();
+                }
+        }
+        else {
+            window.alert('Merci de bien renseigner les champs')
+        }
     });
 }
