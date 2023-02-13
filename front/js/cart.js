@@ -94,10 +94,11 @@ function getCart() {
                 productQuantity.setAttribute("name", "itemQuantity");
 
                 productQuantity.addEventListener('change', () => {
-                    produitLocalStorage[i].qte_produit = parseInt(productQuantity.value)
+                    produitLocalStorage[i].qte_produit = parseInt(productQuantity.value);
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                    totals();
+                    location.reload();
                 })
+                totals();
 
                 //insertion de div suppression
                 const productItemContentSettingsDelete = document.createElement("div");
@@ -111,16 +112,13 @@ function getCart() {
 
                 productSupprimer.addEventListener('click', () => {
                     productArticle.remove();
-                     //Suppression de l'objet avec filter
+                    //Suppression de l'objet avec filter
                     produitLocalStorage = produitLocalStorage.filter(el =>
                     (el.id_produit !== produitLocalStorage[i].id_produit) && (el.couleur_produit !== produitLocalStorage[i].couleur_produit));
 
                     //On envoie la variable dans le local storage
                     localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-
-                    console.log(produitLocalStorage);
-
-                    totals();
+                    location.reload();
                 })
                 totals();
             })
